@@ -8,6 +8,7 @@ module Lazy
     class JSON < String
       INDENT_SIZE = 2
       INDENT = ' ' * INDENT_SIZE
+      MIN_CHARACTER_SIZE = 2
 
       attr_accessor :indent_count
 
@@ -55,13 +56,13 @@ module Lazy
             newline_first = false
             object.each do |element|
               if first
-                if element.to_s.size > 2
+                if element.to_s.size > MIN_CHARACTER_SIZE
                   q.text "\n#{indent}"
                   newline_first = true
                 end
               else
-                if prev_element.to_s.size < 2
                   q.text ", "
+                if prev_element.to_s.size > MIN_CHARACTER_SIZE
                 else
                   q.text ",\n#{indent}"
                 end
