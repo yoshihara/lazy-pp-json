@@ -118,8 +118,7 @@ module Lazy
 
       def create_next_json(value)
         return value if value.instance_of?(String)
-        value = JSON.new(value.to_s.gsub("=>", ":"), @indent_count + 1)
-        value
+        JSON.new(value.to_s.gsub("=>", ":"), @indent_count + 1)
       end
 
       def text_separator(q, newline_separator)
