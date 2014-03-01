@@ -38,21 +38,11 @@ module Lazy
 
               text_indent(q)
 
-              q.pp key
-              q.text ":"
+              text_key(q, key)
 
               first = false
 
-              if value.instance_of?(String)
-                q.pp value
-                next
-              end
-
-              text_indent(q) if value.instance_of?(Array)
-
-              q.breakable ""
-              json = create_next_json(value)
-              q.pp json
+              text_value(q, value)
             end
 
             text_prev_indent(q)
@@ -110,6 +100,24 @@ module Lazy
 
       def text_prev_indent(q)
         q.text "\n#{prev_indent}"
+      end
+
+      def text_key(q, key)
+        q.pp key
+        q.text ":"
+      end
+
+      def text_value(q, value)
+        if value.instance_of?(String)
+          q.pp value
+          return
+        end
+
+        text_indent(q) if value.instance_of?(Array)
+
+        q.breakable ""
+        json = create_next_json(value)
+        q.pp json
       end
 
       def create_next_json(value)
