@@ -10,11 +10,9 @@ module Lazy
       INDENT = ' ' * INDENT_SIZE
       MIN_CHARACTER_SIZE = 2
 
-      attr_accessor :indent_count
-
-      def initialize(raw)
+      def initialize(raw, indent_count=nil)
         super(raw)
-        @indent_count = 1
+        @indent_count = indent_count || 1
       end
 
       def pretty_print(q)
@@ -120,15 +118,14 @@ module Lazy
 
       def create_next_json(value)
         return value if value.instance_of?(String)
-        value = JSON.new(value.to_s.gsub("=>", ":"))
-        value.indent_count = @indent_count + 1
+        value = JSON.new(value.to_s.gsub("=>", ":"), @indent_count + 1)
         value
       end
 
       def text_separator(q, newline_separator)
         q.text ","
         if newline_separator
-          q.text "\n#{indent}"
+          text_indent(q)
         else
           q.text " "
         end
