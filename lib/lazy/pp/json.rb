@@ -33,10 +33,13 @@ module Lazy
         case object
         when Hash
           q.group(indent_width, "{", "}") do
-            q.text "\n#{indent}"
+            text_indent(q)
             first = true
             object.each do |key, value|
-              q.text(",\n#{indent}") unless first
+              unless first
+                q.text(",")
+                text_indent(q)
+              end
 
               q.pp key
               q.text ":"
@@ -47,8 +50,9 @@ module Lazy
               end
               first = false
             end
-            q.text "\n#{prev_indent}"
+            text_prev_indent(q)
           end
+
         when Array
           prev_element = nil
           q.group(indent_width, "[", "]") do
@@ -57,7 +61,7 @@ module Lazy
             object.each do |element|
               if first
                 if element.to_s.size > MIN_CHARACTER_SIZE
-                  q.text "\n#{indent}"
+                  text_indent(q)
                   newline_first = true
                 end
               else
@@ -70,7 +74,7 @@ module Lazy
               first = false
             end
 
-            q.text "\n#{prev_indent}" if newline_first
+            text_prev_indent(q) if newline_first
           end
         end
       end
@@ -95,6 +99,14 @@ module Lazy
 
       def prev_indent_width
         INDENT_SIZE * (@indent_count - 1)
+      end
+
+      def text_indent(q)
+        q.text "\n#{indent}"
+      end
+
+      def text_prev_indent(q)
+        q.text "\n#{prev_indent}"
       end
 
       def create_next_json(value)
