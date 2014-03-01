@@ -50,11 +50,9 @@ module Lazy
 
               text_indent(q) if value.instance_of?(Array)
 
-              q.group do
-                q.breakable ""
-                json = create_next_json(value)
-                q.pp json
-              end
+              q.breakable ""
+              json = create_next_json(value)
+              q.pp json
             end
 
             text_prev_indent(q)
