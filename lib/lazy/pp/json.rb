@@ -14,59 +14,61 @@ module Lazy
         super(raw)
         @indent_count = indent_count || 1
         @newline_separator = false
+        @q = nil
       end
 
       def pretty_print(q)
+        @q = q
         begin
           object = ::JSON.parse(self)
         rescue
-          q.text self
+          @q.text self
           return
         end
 
         if object.empty?
-          q.pp object
+          @q.pp object
           return
         end
 
         case object
         when Hash
-          q.group(indent_width, "{", "}") do
+          @q.group(indent_width, "{", "}") do
             first = true
             object.each do |key, value|
-              q.text(",") unless first
+              @q.text(",") unless first
 
-              text_indent(q)
+              text_indent
 
-              text_key(q, key)
+              text_key(key)
 
               first = false
 
-              text_value(q, value)
+              text_value(value)
             end
 
-            text_prev_indent(q)
+            text_prev_indent
           end
 
         when Array
-          q.group(indent_width, "[", "]") do
+          @q.group(indent_width, "[", "]") do
             first = true
             object.each do |element|
 
               if first
                 first = false
                 if element.to_s.size > MIN_CHARACTER_SIZE
-                  text_indent(q)
+                  text_indent
                   @newline_separator = true
                 end
               else
-                text_separator(q)
+                text_separator
               end
 
-              text_element(q, element)
+              text_element(element)
             end
 
-            text_prev_indent(q) if @newline_separator
+            text_prev_indent if @newline_separator
           end
         end
       end
@@ -93,34 +95,34 @@ module Lazy
         INDENT_SIZE * (@indent_count - 1)
       end
 
-      def text_indent(q)
-        q.text "\n#{indent}"
+      def text_indent
+        @q.text "\n#{indent}"
       end
 
-      def text_prev_indent(q)
-        q.text "\n#{prev_indent}"
+      def text_prev_indent
+        @q.text "\n#{prev_indent}"
       end
 
-      def text_key(q, key)
-        q.pp key
-        q.text ":"
+      def text_key(key)
+        @q.pp key
+        @q.text ":"
       end
 
-      def text_value(q, value)
+      def text_value(value)
         if value.instance_of?(String)
-          q.pp value
+          @q.pp value
           return
         end
 
-        text_indent(q) if value.instance_of?(Array)
+        text_indent if value.instance_of?(Array)
 
-        q.breakable ""
-        text_element(q, value)
+        @q.breakable ""
+        text_element(value)
       end
 
-      def text_element(q, element)
+      def text_element(element)
         element = create_next_json(element)
-        q.pp element
+        @q.pp element
       end
 
       def create_next_json(value)
@@ -128,12 +130,12 @@ module Lazy
         JSON.new(value.to_s.gsub("=>", ":"), @indent_count + 1)
       end
 
-      def text_separator(q)
-        q.text ","
+      def text_separator
+        @q.text ","
         if @newline_separator
-          text_indent(q)
+          text_indent
         else
-          q.text " "
+          @q.text " "
         end
       end
     end
