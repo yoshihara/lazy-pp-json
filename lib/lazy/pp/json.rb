@@ -32,13 +32,11 @@ module Lazy
         case object
         when Hash
           q.group(indent_width, "{", "}") do
-            text_indent(q)
             first = true
             object.each do |key, value|
-              unless first
-                q.text(",")
-                text_indent(q)
-              end
+              q.text(",") unless first
+
+              text_indent(q)
 
               q.pp key
               q.text ":"
@@ -68,6 +66,7 @@ module Lazy
             object.each do |element|
 
               if first
+                first = false
                 if element.to_s.size > MIN_CHARACTER_SIZE
                   text_indent(q)
                   @newline_separator = true
@@ -78,7 +77,6 @@ module Lazy
 
               element = create_next_json(element)
               q.pp element
-              first = false
             end
 
             text_prev_indent(q) if @newline_separator
