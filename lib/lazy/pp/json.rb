@@ -43,7 +43,15 @@ module Lazy
 
               q.pp key
               q.text ":"
-              q.group(1) do
+              if value.instance_of?(String)
+                q.pp value
+                first = false
+                next
+              elsif value.instance_of?(Array)
+                text_indent(q)
+              end
+
+              q.group do
                 q.breakable ""
                 json = create_next_json(value)
                 q.pp json
