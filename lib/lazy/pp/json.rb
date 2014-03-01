@@ -31,7 +31,8 @@ module Lazy
 
         case object
         when Hash
-          q.group(indent_width, "{\n#{indent}", "\n#{prev_indent}}") do
+          q.group(indent_width, "{", "}") do
+            q.text "\n#{indent}"
             first = true
             object.each do |key, value|
               q.text(",\n#{indent}") unless first
@@ -45,10 +46,11 @@ module Lazy
               end
               first = false
             end
+            q.text "\n#{prev_indent}"
           end
         when Array
           prev_element = nil
-          q.group(indent_width, "[") do
+          q.group(indent_width, "[", "]") do
             first = true
             newline_first = false
             object.each do |element|
@@ -72,7 +74,6 @@ module Lazy
             end
 
             q.text "\n#{prev_indent}" if newline_first
-            q.text "]"
           end
         end
       end
