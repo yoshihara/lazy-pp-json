@@ -43,21 +43,23 @@ module Lazy
 
               q.pp key
               q.text ":"
+
+              first = false
+
               if value.instance_of?(String)
                 q.pp value
-                first = false
                 next
-              elsif value.instance_of?(Array)
-                text_indent(q)
               end
+
+              text_indent(q) if value.instance_of?(Array)
 
               q.group do
                 q.breakable ""
                 json = create_next_json(value)
                 q.pp json
               end
-              first = false
             end
+
             text_prev_indent(q)
           end
 
@@ -67,6 +69,7 @@ module Lazy
             first = true
             newline_first = false
             object.each do |element|
+
               if first
                 if element.to_s.size > MIN_CHARACTER_SIZE
                   text_indent(q)
