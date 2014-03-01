@@ -63,8 +63,7 @@ module Lazy
                 text_separator(q)
               end
 
-              element = create_next_json(element)
-              q.pp element
+              text_element(q, element)
             end
 
             text_prev_indent(q) if @newline_separator
@@ -116,8 +115,12 @@ module Lazy
         text_indent(q) if value.instance_of?(Array)
 
         q.breakable ""
-        json = create_next_json(value)
-        q.pp json
+        text_element(q, value)
+      end
+
+      def text_element(q, element)
+        element = create_next_json(element)
+        q.pp element
       end
 
       def create_next_json(value)
