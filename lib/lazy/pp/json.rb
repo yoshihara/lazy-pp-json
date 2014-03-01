@@ -42,7 +42,7 @@ module Lazy
               q.text ":"
               q.group(1) do
                 q.breakable ""
-                if Hash === value or Array === value
+                if parsed_json?(value)
                   value = JSON.new(value.to_s.gsub("=>", ":"))
                   value.indent_count = @indent_count + 1
                 end
@@ -70,7 +70,7 @@ module Lazy
                 end
               end
 
-              if Hash === element or Array === element
+              if parsed_json?(element)
                 element = JSON.new(element.to_s.gsub("=>", ":"))
                 element.indent_count = @indent_count + 1
               end
@@ -105,6 +105,10 @@ module Lazy
 
       def prev_indent_width
         INDENT_SIZE * (@indent_count - 1)
+      end
+
+      def parsed_json?(object)
+        object.instance_of?(Hash) or object.instance_of?(Array)
       end
     end
   end
