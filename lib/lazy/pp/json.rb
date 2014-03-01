@@ -61,11 +61,7 @@ module Lazy
                   newline_first = true
                 end
               else
-                  q.text ", "
-                if prev_element.to_s.size > MIN_CHARACTER_SIZE
-                else
-                  q.text ",\n#{indent}"
-                end
+                text_separator(q, prev_element)
               end
 
               element = create_next_json(element)
@@ -106,6 +102,15 @@ module Lazy
         value = JSON.new(value.to_s.gsub("=>", ":"))
         value.indent_count = @indent_count + 1
         value
+      end
+
+      def text_separator(q, element)
+        q.text ","
+        if element.to_s.size > MIN_CHARACTER_SIZE
+          q.text "\n#{indent}"
+        else
+          q.text " "
+        end
       end
     end
   end
