@@ -13,6 +13,7 @@ module Lazy
       def initialize(raw, indent_count=nil)
         super(raw)
         @indent_count = indent_count || 1
+        @newline_separator = false
       end
 
       def pretty_print(q)
@@ -64,16 +65,15 @@ module Lazy
         when Array
           q.group(indent_width, "[", "]") do
             first = true
-            newline_separator = false
             object.each do |element|
 
               if first
                 if element.to_s.size > MIN_CHARACTER_SIZE
                   text_indent(q)
-                  newline_separator = true
+                  @newline_separator = true
                 end
               else
-                text_separator(q, newline_separator)
+                text_separator(q)
               end
 
               element = create_next_json(element)
@@ -81,7 +81,7 @@ module Lazy
               first = false
             end
 
-            text_prev_indent(q) if newline_separator
+            text_prev_indent(q) if @newline_separator
           end
         end
       end
@@ -121,9 +121,9 @@ module Lazy
         JSON.new(value.to_s.gsub("=>", ":"), @indent_count + 1)
       end
 
-      def text_separator(q, newline_separator)
+      def text_separator(q)
         q.text ","
-        if newline_separator
+        if @newline_separator
           text_indent(q)
         else
           q.text " "
