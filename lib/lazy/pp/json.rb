@@ -20,10 +20,8 @@ module Lazy
         begin
           object = ::JSON.parse(self)
         rescue
-          if String === self
-            q.text self
-            return
-          end
+          q.text self
+          return
         end
 
         if object.empty?
