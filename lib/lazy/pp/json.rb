@@ -14,29 +14,29 @@ module Lazy
         super(raw)
         @indent_count = indent_count || 1
         @newline_separator = false
-        @q = nil
+        @pretty_print = nil
       end
 
-      def pretty_print(q)
-        @q = q
+      def pretty_print(pretty_print)
+        @pretty_print = pretty_print
         begin
           object = ::JSON.parse(self)
         rescue
-          @q.text self
+          @pretty_print.text self
           return
         end
 
         if object.empty?
-          @q.pp object
+          @pretty_print.pp object
           return
         end
 
         case object
         when Hash
-          @q.group(indent_width, "{", "}") do
+          @pretty_print.group(indent_width, "{", "}") do
             first = true
             object.each do |key, value|
-              @q.text(",") unless first
+              @pretty_print.text(",") unless first
 
               text_indent
 
@@ -51,7 +51,7 @@ module Lazy
           end
 
         when Array
-          @q.group(indent_width, "[", "]") do
+          @pretty_print.group(indent_width, "[", "]") do
             first = true
             object.each do |element|
 
@@ -73,8 +73,8 @@ module Lazy
         end
       end
 
-      def pretty_pring_circle(q)
-        q.text(empty? ? "" : "{...}")
+      def pretty_pring_circle(pretty_print)
+        pretty_print.text(empty? ? "" : "{...}")
       end
 
       private
@@ -96,33 +96,33 @@ module Lazy
       end
 
       def text_indent
-        @q.text "\n#{indent}"
+        @pretty_print.text "\n#{indent}"
       end
 
       def text_prev_indent
-        @q.text "\n#{prev_indent}"
+        @pretty_print.text "\n#{prev_indent}"
       end
 
       def text_key(key)
-        @q.pp key
-        @q.text ":"
+        @pretty_print.pp key
+        @pretty_print.text ":"
       end
 
       def text_value(value)
         if value.instance_of?(String)
-          @q.pp value
+          @pretty_print.pp value
           return
         end
 
         text_indent if value.instance_of?(Array)
 
-        @q.breakable ""
+        @pretty_print.breakable ""
         text_element(value)
       end
 
       def text_element(element)
         element = create_next_json(element)
-        @q.pp element
+        @pretty_print.pp element
       end
 
       def create_next_json(value)
@@ -131,11 +131,11 @@ module Lazy
       end
 
       def text_separator
-        @q.text ","
+        @pretty_print.text ","
         if @newline_separator
           text_indent
         else
-          @q.text " "
+          @pretty_print.text " "
         end
       end
     end
