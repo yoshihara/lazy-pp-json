@@ -64,7 +64,6 @@ module Lazy
           end
 
         when Array
-          prev_element = nil
           q.group(indent_width, "[", "]") do
             first = true
             newline_first = false
@@ -76,12 +75,11 @@ module Lazy
                   newline_first = true
                 end
               else
-                text_separator(q, prev_element)
+                text_separator(q, newline_first)
               end
 
               element = create_next_json(element)
               q.pp element
-              prev_element = element
               first = false
             end
 
@@ -127,9 +125,9 @@ module Lazy
         value
       end
 
-      def text_separator(q, element)
+      def text_separator(q, newline_first)
         q.text ","
-        if element.to_s.size > MIN_CHARACTER_SIZE
+        if newline_first
           q.text "\n#{indent}"
         else
           q.text " "
