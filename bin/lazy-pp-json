@@ -1,0 +1,16 @@
+#!/usr/bin/env ruby
+# -*- coding: utf-8; mode: ruby -*-
+
+require "lazy-pp-json"
+
+if ARGV.size > 1
+  puts <<DESCRIPTION
+error: lazy-pp-json should have 1 argument only.
+
+  Usage:
+    lazy-pp-json JSON_STRING
+DESCRIPTION
+  exit(false)
+end
+
+pp Lazy::PP::JSON.new(ARGV.first)
