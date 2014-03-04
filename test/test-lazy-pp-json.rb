@@ -97,6 +97,21 @@ ACTUAL
 ]
 EXPECTED
       end
+
+      def test_short_including_hash
+        actual_string = <<ACTUAL
+["a", {"key":"value"}, "b"]
+ACTUAL
+        assert_lazy_json(<<EXPECTED, actual_string)
+[
+  "a",
+  {
+    "key":"value"
+  },
+  "b"
+]
+EXPECTED
+      end
     end
 
     class HashTest < self

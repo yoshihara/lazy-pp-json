@@ -57,7 +57,7 @@ module Lazy
 
               if first
                 first = false
-                if element.to_s.size > MIN_CHARACTER_SIZE
+                if separate_elements_with_newline?(object)
                   text_indent
                   @newline_separator = true
                 end
@@ -78,6 +78,13 @@ module Lazy
       end
 
       private
+
+      def separate_elements_with_newline?(object)
+        return false unless object.instance_of?(Array)
+
+        object.first.to_s.size > MIN_CHARACTER_SIZE or
+          object.any? {|element| element.instance_of?(Hash) }
+      end
 
       def indent
         " " * indent_width
