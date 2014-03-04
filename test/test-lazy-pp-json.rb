@@ -39,7 +39,7 @@ module Lazy::PP
 EXPECTED
       end
 
-      def test_include_array
+      def test_including_array
         actual_string = '["first", ["first-first", "first-last"], "last"]'
         assert_lazy_json(<<EXPECTED, actual_string)
 [
@@ -53,7 +53,7 @@ EXPECTED
 EXPECTED
       end
 
-      def test_include_short_array
+      def test_including_short_array
         actual_string = '["first", [1,2], "last"]'
         assert_lazy_json(<<EXPECTED, actual_string)
 [
@@ -64,7 +64,7 @@ EXPECTED
 EXPECTED
       end
 
-      def test_include_array_including_array
+      def test_including_array_including_array
         actual_string = <<ACTUAL
 ["first", ["first-first", ["first-first-first", "first-first-last"]], "last"]
 ACTUAL
@@ -83,7 +83,7 @@ ACTUAL
 EXPECTED
       end
 
-      def test_include_hash
+      def test_including_hash
         actual_string = <<ACTUAL
 ["first", {"key":"value"}, "last"]
 ACTUAL
