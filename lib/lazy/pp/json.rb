@@ -19,12 +19,7 @@ module Lazy
 
       def pretty_print(pretty_print)
         @pretty_print = pretty_print
-        begin
-          object = ::JSON.parse(self)
-        rescue
-          @pretty_print.text self
-          return
-        end
+        object = ::JSON.parse(self)
 
         if object.empty?
           @pretty_print.pp object

@@ -23,11 +23,11 @@ module Lazy::PP
 
     class ArrayTest < self
       def test_single
-        assert_lazy_json("[1]\n", '[1]')
+        assert_lazy_json('["1"]' + "\n", '["1"]')
       end
 
       def test_short_double
-        assert_lazy_json("[1, 2]\n", '[1, 2]')
+        assert_lazy_json('["1", "2"]' + "\n", '["1", "2"]')
       end
 
       def test_double
@@ -54,11 +54,11 @@ EXPECTED
       end
 
       def test_including_short_array
-        actual_string = '["first", [1,2], "last"]'
+        actual_string = '["first", ["1","2"], "last"]'
         assert_lazy_json(<<EXPECTED, actual_string)
 [
   "first",
-  [1, 2],
+  ["1", "2"],
   "last"
 ]
 EXPECTED
