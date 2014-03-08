@@ -1,5 +1,7 @@
 # lazy-pp-json
 
+[![Build Status](https://travis-ci.org/yoshihara/lazy-pp-json.png?branch=master)](https://travis-ci.org/yoshihara/lazy-pp-json)
+
 ## Description
 
 Lazy pp json responses.
