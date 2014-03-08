@@ -12,6 +12,10 @@ module Lazy
           @stdout = StringIO.new
           $stdout = @stdout
         end
+
+        def teardown
+          $stdout = @original_stdout
+        end
       end
     end
   end

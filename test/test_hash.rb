@@ -59,10 +59,6 @@ ACTUAL
 EXPECTED
     end
 
-    def teardown
-      $stdout = @original_stdout
-    end
-
     private
 
     def assert_lazy_json(expected, actual_string)
