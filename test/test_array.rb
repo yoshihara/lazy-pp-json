@@ -12,33 +12,27 @@ module Lazy
           assert_lazy_json("[]\n", '[]')
         end
 
-        def test_single
+        def test_short_single
           assert_lazy_json('["1"]' + "\n", '["1"]')
+        end
+
+        def test_long_single
+          assert_lazy_json(<<EXPECTED, "[\"#{LONG_STRING}\"]")
+[
+  "#{LONG_STRING}"
+]
+EXPECTED
         end
 
         def test_short_double
           assert_lazy_json('["1", "2"]' + "\n", '["1", "2"]')
         end
 
-        def test_double
-          assert_lazy_json(<<EXPECTED, '["first", "last"]')
+        def test_long_double
+          assert_lazy_json(<<EXPECTED, SPLITED_LONG_ARRAY_STRING)
 [
-  "first",
-  "last"
-]
-EXPECTED
-        end
-
-        def test_including_array
-          actual_string = '["first", ["first-first", "first-last"], "last"]'
-          assert_lazy_json(<<EXPECTED, actual_string)
-[
-  "first",
-  [
-    "first-first",
-    "first-last"
-  ],
-  "last"
+  "#{SPLITED_LONG_ARRAY.first}",
+  "#{SPLITED_LONG_ARRAY.last}"
 ]
 EXPECTED
         end
@@ -54,7 +48,21 @@ EXPECTED
 EXPECTED
         end
 
-        def test_including_array_including_array
+        def test_including_long_array
+          actual_string = "[\"first\", #{SPLITED_LONG_ARRAY_STRING}, \"last\"]"
+          assert_lazy_json(<<EXPECTED, actual_string)
+[
+  "first",
+  [
+    "#{SPLITED_LONG_ARRAY.first}",
+    "#{SPLITED_LONG_ARRAY.last}"
+  ],
+  "last"
+]
+EXPECTED
+        end
+
+        def test_including_array_including_short_array
           actual_string = <<ACTUAL
 ["first", ["first-first", ["first-first-first", "first-first-last"]], "last"]
 ACTUAL
@@ -63,10 +71,27 @@ ACTUAL
   "first",
   [
     "first-first",
+    ["first-first-first", "first-first-last"]
+  ],
+  "last"
+]
+EXPECTED
+        end
+
+        def test_including_array_including_long_array
+          actual_string = <<ACTUAL
+["first", ["first-first", #{SPLITED_LONG_ARRAY_STRING}, "first-last"], "last"]
+ACTUAL
+          assert_lazy_json(<<EXPECTED, actual_string)
+[
+  "first",
+  [
+    "first-first",
     [
-      "first-first-first",
-      "first-first-last"
-    ]
+      "#{SPLITED_LONG_ARRAY.first}",
+      "#{SPLITED_LONG_ARRAY.last}"
+    ],
+    "first-last"
   ],
   "last"
 ]

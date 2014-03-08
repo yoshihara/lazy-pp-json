@@ -29,23 +29,7 @@ EXPECTED
 EXPECTED
         end
 
-        def test_including_array
-          actual_string = <<ACTUAL
-{"key1":["first","second"], "key2":"value2"}
-ACTUAL
-          assert_lazy_json(<<EXPECTED, actual_string)
-{
-  "key1":
-  [
-    "first",
-    "second"
-  ],
-  "key2":"value2"
-}
-EXPECTED
-        end
-
-        def test_including_short_array
+        def test_short_array_as_value
           actual_string = <<ACTUAL
 {"key1":["1","2"], "key2":"value2"}
 ACTUAL
@@ -53,6 +37,22 @@ ACTUAL
 {
   "key1":
   ["1", "2"],
+  "key2":"value2"
+}
+EXPECTED
+        end
+
+        def test_long_array_as_value
+          actual_string = <<ACTUAL
+{"key1":#{SPLITED_LONG_ARRAY_STRING}, "key2":"value2"}
+ACTUAL
+          assert_lazy_json(<<EXPECTED, actual_string)
+{
+  "key1":
+  [
+    "#{SPLITED_LONG_ARRAY.first}",
+    "#{SPLITED_LONG_ARRAY.last}"
+  ],
   "key2":"value2"
 }
 EXPECTED

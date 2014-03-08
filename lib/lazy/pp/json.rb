@@ -8,7 +8,7 @@ module Lazy
     class JSON < String
       INDENT_SIZE = 2
       INDENT = ' ' * INDENT_SIZE
-      MIN_CHARACTER_SIZE = 2
+      MAX_CHARACTER_SIZE = 40
 
       def initialize(raw, indent_count=nil)
         super(raw)
@@ -47,20 +47,17 @@ module Lazy
 
         when Array
           @pretty_print.group(indent_width, "[", "]") do
-            first = true
-            object.each do |element|
+            if separate_elements_with_newline?(object)
+              @newline_separator = true
+            end
 
-              if first
-                first = false
-                if separate_elements_with_newline?(object)
-                  text_indent
-                  @newline_separator = true
-                end
-              else
-                text_separator
+            object.each.with_index do |element, i|
+              if i.zero?
+                text_indent if @newline_separator
               end
 
               text_element(element)
+              text_separator if i < object.length-1
             end
 
             text_prev_indent if @newline_separator
@@ -74,11 +71,16 @@ module Lazy
 
       private
 
+      def json_value_format?(object)
+        object.instance_of?(Array) or object.instance_of?(Hash)
+      end
+
       def separate_elements_with_newline?(object)
         return false unless object.instance_of?(Array)
+        return true if object.any? {|element| json_value_format?(element) }
 
-        object.first.to_s.size > MIN_CHARACTER_SIZE or
-          object.any? {|element| element.instance_of?(Hash) }
+        array_length = object.map(&:to_s).join.size + indent_width
+        array_length > MAX_CHARACTER_SIZE
       end
 
       def indent
@@ -116,9 +118,7 @@ module Lazy
           return
         end
 
-        text_indent if value.instance_of?(Array)
-
-        @pretty_print.breakable ""
+        text_indent if json_value_format?(value)
         text_element(value)
       end
 
