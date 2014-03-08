@@ -1,15 +1,10 @@
 # -*- coding: utf-8 -*-
 
-require "stringio"
-require "lazy/pp/json"
+require "testutils"
 
 module Lazy::PP
   class JSON::HashTest < Test::Unit::TestCase
-    def setup
-      @original_stdout = $stdout.dup
-      @stdout = StringIO.new
-      $stdout = @stdout
-    end
+    include Lazy::PP::JSON::TestUtils
 
     def test_empty
       assert_lazy_json("{}\n", '{}')
