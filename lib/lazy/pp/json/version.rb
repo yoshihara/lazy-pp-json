@@ -1,6 +1,6 @@
 module Lazy
   module PP
-    module Json
+    module JSON
       VERSION = "0.0.1"
     end
   end
