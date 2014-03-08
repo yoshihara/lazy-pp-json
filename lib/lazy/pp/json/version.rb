@@ -1,6 +1,8 @@
+# -*- coding: utf-8 -*-
+
 module Lazy
   module PP
-    module JSON
+    class JSON < String
       VERSION = "0.0.1"
     end
   end
