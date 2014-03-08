@@ -2,34 +2,36 @@
 
 require "testutils"
 
-module Lazy::PP
-  class JSON::ArrayTest < Test::Unit::TestCase
-    include Lazy::PP::JSON::TestUtils
+module Lazy
+  module PP
+    class JSON
+      class ArrayTest < Test::Unit::TestCase
+        include Lazy::PP::JSON::TestUtils
 
-    def test_empty
-      assert_lazy_json("[]\n", '[]')
-    end
+        def test_empty
+          assert_lazy_json("[]\n", '[]')
+        end
 
-    def test_single
-      assert_lazy_json('["1"]' + "\n", '["1"]')
-    end
+        def test_single
+          assert_lazy_json('["1"]' + "\n", '["1"]')
+        end
 
-    def test_short_double
-      assert_lazy_json('["1", "2"]' + "\n", '["1", "2"]')
-    end
+        def test_short_double
+          assert_lazy_json('["1", "2"]' + "\n", '["1", "2"]')
+        end
 
-    def test_double
-      assert_lazy_json(<<EXPECTED, '["first", "last"]')
+        def test_double
+          assert_lazy_json(<<EXPECTED, '["first", "last"]')
 [
   "first",
   "last"
 ]
 EXPECTED
-    end
+        end
 
-    def test_including_array
-      actual_string = '["first", ["first-first", "first-last"], "last"]'
-      assert_lazy_json(<<EXPECTED, actual_string)
+        def test_including_array
+          actual_string = '["first", ["first-first", "first-last"], "last"]'
+          assert_lazy_json(<<EXPECTED, actual_string)
 [
   "first",
   [
@@ -39,24 +41,24 @@ EXPECTED
   "last"
 ]
 EXPECTED
-    end
+        end
 
-    def test_including_short_array
-      actual_string = '["first", ["1","2"], "last"]'
-      assert_lazy_json(<<EXPECTED, actual_string)
+        def test_including_short_array
+          actual_string = '["first", ["1","2"], "last"]'
+          assert_lazy_json(<<EXPECTED, actual_string)
 [
   "first",
   ["1", "2"],
   "last"
 ]
 EXPECTED
-    end
+        end
 
-    def test_including_array_including_array
-      actual_string = <<ACTUAL
+        def test_including_array_including_array
+          actual_string = <<ACTUAL
 ["first", ["first-first", ["first-first-first", "first-first-last"]], "last"]
 ACTUAL
-      assert_lazy_json(<<EXPECTED, actual_string)
+          assert_lazy_json(<<EXPECTED, actual_string)
 [
   "first",
   [
@@ -69,13 +71,13 @@ ACTUAL
   "last"
 ]
 EXPECTED
-    end
+        end
 
-    def test_including_hash
-      actual_string = <<ACTUAL
+        def test_including_hash
+          actual_string = <<ACTUAL
 ["first", {"key":"value"}, "last"]
 ACTUAL
-      assert_lazy_json(<<EXPECTED, actual_string)
+          assert_lazy_json(<<EXPECTED, actual_string)
 [
   "first",
   {
@@ -84,13 +86,13 @@ ACTUAL
   "last"
 ]
 EXPECTED
-    end
+        end
 
-    def test_short_including_hash
-      actual_string = <<ACTUAL
+        def test_short_including_hash
+          actual_string = <<ACTUAL
 ["a", {"key":"value"}, "b"]
 ACTUAL
-      assert_lazy_json(<<EXPECTED, actual_string)
+          assert_lazy_json(<<EXPECTED, actual_string)
 [
   "a",
   {
@@ -99,6 +101,8 @@ ACTUAL
   "b"
 ]
 EXPECTED
+        end
+      end
     end
   end
 end
