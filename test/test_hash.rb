@@ -29,6 +29,15 @@ EXPECTED
 EXPECTED
         end
 
+        def test_different_key_length
+          assert_lazy_json(<<EXPECTED, '{"key-first":"value1", "key-second":"value2"}')
+{
+  "key-first" :"value1",
+  "key-second":"value2"
+}
+EXPECTED
+        end
+
         def test_short_array_as_value
           actual_string = <<ACTUAL
 {"key1":["1","2"], "key2":"value2"}
@@ -60,14 +69,14 @@ EXPECTED
 
         def test_including_short_hash
           actual_string = <<ACTUAL
-{"key1":{"1":"2","3":"4"}, "key2":"value2"}
+{"key1":{"1":"2","3rd":"4th"}, "key2":"value2"}
 ACTUAL
           assert_lazy_json(<<EXPECTED, actual_string)
 {
   "key1":
   {
-    "1":"2",
-    "3":"4"
+    "1"  :"2",
+    "3rd":"4th"
   },
   "key2":"value2"
 }

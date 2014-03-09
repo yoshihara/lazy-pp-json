@@ -14,6 +14,7 @@ module Lazy
         super(raw)
         @indent_count = indent_count || 1
         @newline_separator = false
+        @key_max_length = 0
         @pretty_print = nil
       end
 
@@ -30,6 +31,7 @@ module Lazy
         when Hash
           @pretty_print.group(indent_width, "{", "}") do
             first = true
+            @key_max_length = object.keys.map(&:length).max
             object.each do |key, value|
               @pretty_print.text(",") unless first
 
@@ -108,7 +110,7 @@ module Lazy
       end
 
       def text_key(key)
-        @pretty_print.pp key
+        @pretty_print.text "\"#{key}\"".ljust(@key_max_length + 2)
         @pretty_print.text ":"
       end
 
