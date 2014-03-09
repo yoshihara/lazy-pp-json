@@ -65,7 +65,7 @@ module Lazy
         end
       end
 
-      def pretty_pring_circle(pretty_print)
+      def pretty_print_cycle(pretty_print)
         pretty_print.text(empty? ? "" : "{...}")
       end
 
