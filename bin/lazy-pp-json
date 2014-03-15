@@ -8,9 +8,9 @@ if ARGV.size > 1
 error: lazy-pp-json should have 1 argument only.
 
   Usage:
-    lazy-pp-json JSON_STRING
+    lazy-pp-json JSON_FILE
 DESCRIPTION
   exit(false)
 end
 
-pp Lazy::PP::JSON.new(ARGV.first)
+pp Lazy::PP::JSON.new(File.read(ARGV.first))
