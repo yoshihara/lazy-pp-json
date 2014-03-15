@@ -12,6 +12,14 @@ module Lazy
           assert_lazy_json("{}\n", '{}')
         end
 
+        def test_numeric
+          assert_lazy_json(<<EXPECTED, '{"key":2}')
+{
+  "key":2
+}
+EXPECTED
+        end
+
         def test_single
           assert_lazy_json(<<EXPECTED, '{"key":"value"}')
 {

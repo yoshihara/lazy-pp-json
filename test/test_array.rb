@@ -12,6 +12,10 @@ module Lazy
           assert_lazy_json("[]\n", '[]')
         end
 
+        def test_numeric
+         assert_lazy_json('[1]' + "\n", '[1]')
+        end
+
         def test_short_single
           assert_lazy_json('["1"]' + "\n", '["1"]')
         end
