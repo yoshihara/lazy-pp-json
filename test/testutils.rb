@@ -19,22 +19,12 @@ module Lazy
 ["#{LONG_STRING[0..25]}", "#{LONG_STRING[26..51]}"]
 ACTUAL
 
-        def setup
-          @original_stdout = $stdout.dup
-          @stdout = StringIO.new
-          $stdout = @stdout
-        end
-
-        def teardown
-          $stdout = @original_stdout
-        end
-
         private
 
         def assert_lazy_json(expected, actual_string)
           actual = Lazy::PP::JSON.new(actual_string)
-          pp(actual)
-          assert_equal(expected, @stdout.string, @stdout.string)
+          output = actual.pretty_inspect
+          assert_equal(expected, output, output)
         end
       end
     end
