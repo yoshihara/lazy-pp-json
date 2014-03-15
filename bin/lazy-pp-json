@@ -3,7 +3,7 @@
 
 require "lazy-pp-json"
 
-if ARGV.size > 1
+if ARGV.empty? or ARGV.size > 1
   puts <<DESCRIPTION
 error: lazy-pp-json should have 1 argument only.
 
