@@ -7,10 +7,6 @@ example_json = <<JSON
 JSON
 
 normal_pretty_json = JSON.pretty_generate(JSON.parse(example_json))
-pretty_json = Lazy::PP::JSON.new(example_json)
-
-lazy_pp = pretty_json.pretty_inspect
-
 normal_pp = normal_pretty_json.each_line.map{|line| "# #{line}"}.join
 normal_pp_exapmle = <<EXAMPLE
 
@@ -23,6 +19,8 @@ puts JSON.pretty_generate(JSON.parse(example_json))
 
 EXAMPLE
 
+pretty_json = Lazy::PP::JSON.new(example_json)
+lazy_pp = pretty_json.pretty_inspect.each_line.map{|line| "# #{line}"}.join
 lazy_pp_example = <<EXAMPLE
 
 ```ruby

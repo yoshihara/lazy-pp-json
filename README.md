@@ -38,20 +38,20 @@ puts JSON.pretty_generate(JSON.parse(example_json))
 example_json = "[[0,1395671860.99505,2.50339508056641e-05],{"alloc_count":136,"starttime":1395671856,"uptime":4,"version":"4.0.0","n_queries":0,"cache_hit_rate":0.0,"command_version":1,"default_command_version":1,"max_command_version":2}]"
 pp Lazy::PP::JSON.new(example_json)
 #=>
-[
-  [0, 1395671860.99505, 2.50339508056641e-05],
-  {
-    "alloc_count"            :136,
-    "starttime"              :1395671856,
-    "uptime"                 :4,
-    "version"                :"4.0.0",
-    "n_queries"              :0,
-    "cache_hit_rate"         :0.0,
-    "command_version"        :1,
-    "default_command_version":1,
-    "max_command_version"    :2
-  }
-]
+# [
+#   [0, 1395671860.99505, 2.50339508056641e-05],
+#   {
+#     "alloc_count"            :136,
+#     "starttime"              :1395671856,
+#     "uptime"                 :4,
+#     "version"                :"4.0.0",
+#     "n_queries"              :0,
+#     "cache_hit_rate"         :0.0,
+#     "command_version"        :1,
+#     "default_command_version":1,
+#     "max_command_version"    :2
+#   }
+# ]
 
 ```
 
