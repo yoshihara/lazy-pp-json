@@ -8,48 +8,51 @@ Lazy pp json responses.
 
 ### JSON#pretty_generate
 
-```
-[
-  [
-    0,
-    1395671860.99505,
-    2.50339508056641e-05
-  ],
-  {
-    "alloc_count": 136,
-    "starttime": 1395671856,
-    "uptime": 4,
-    "version": "4.0.0",
-    "n_queries": 0,
-    "cache_hit_rate": 0.0,
-    "command_version": 1,
-    "default_command_version": 1,
-    "max_command_version": 2
-  }
-]
+```ruby
+example_json = "[[0,1395671860.99505,2.50339508056641e-05],{"alloc_count":136,"starttime":1395671856,"uptime":4,"version":"4.0.0","n_queries":0,"cache_hit_rate":0.0,"command_version":1,"default_command_version":1,"max_command_version":2}]"
+puts JSON.pretty_generate(JSON.parse(example_json))
+#=>
+# [
+#   [
+#     0,
+#     1395671860.99505,
+#     2.50339508056641e-05
+#   ],
+#   {
+#     "alloc_count": 136,
+#     "starttime": 1395671856,
+#     "uptime": 4,
+#     "version": "4.0.0",
+#     "n_queries": 0,
+#     "cache_hit_rate": 0.0,
+#     "command_version": 1,
+#     "default_command_version": 1,
+#     "max_command_version": 2
+#   }
+# ]
 ```
 
 ### lazy-pp-json
 
-```
+```ruby
+example_json = "[[0,1395671860.99505,2.50339508056641e-05],{"alloc_count":136,"starttime":1395671856,"uptime":4,"version":"4.0.0","n_queries":0,"cache_hit_rate":0.0,"command_version":1,"default_command_version":1,"max_command_version":2}]"
+pp Lazy::PP::JSON.new(example_json)
+#=>
 [
-  [
-    0,
-    1395671803.76874,
-    4.10079956054688e-05
-  ],
+  [0, 1395671860.99505, 2.50339508056641e-05],
   {
-    "alloc_count"            :175,
-    "starttime"              :1395671727,
-    "uptime"                 :76,
+    "alloc_count"            :136,
+    "starttime"              :1395671856,
+    "uptime"                 :4,
     "version"                :"4.0.0",
-    "n_queries"              :1,
+    "n_queries"              :0,
     "cache_hit_rate"         :0.0,
     "command_version"        :1,
     "default_command_version":1,
     "max_command_version"    :2
   }
 ]
+
 ```
 
 ## Installation
