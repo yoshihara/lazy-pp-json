@@ -8,16 +8,14 @@ module Lazy
     class JSON
       module TestUtils
 
-        # 52 chars
-        LONG_STRING = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
+        LONG_STRING_LENGTH = Lazy::PP::JSON::MAX_CHARACTER_SIZE + 2
+        LONG_STRING = "a" * LONG_STRING_LENGTH
         SPLITED_LONG_ARRAY = [
-          LONG_STRING[0..25],
-          LONG_STRING[26..51]
+          LONG_STRING[0..LONG_STRING_LENGTH/2-1],
+          LONG_STRING[LONG_STRING_LENGTH/2..-1]
         ]
 
-        SPLITED_LONG_ARRAY_STRING = <<ACTUAL
-["#{LONG_STRING[0..25]}", "#{LONG_STRING[26..51]}"]
-ACTUAL
+        SPLITED_LONG_ARRAY_STRING = SPLITED_LONG_ARRAY.inspect
 
         private
 

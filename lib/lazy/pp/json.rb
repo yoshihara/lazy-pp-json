@@ -8,7 +8,7 @@ module Lazy
     class JSON < String
       INDENT_SIZE = 2
       INDENT = ' ' * INDENT_SIZE
-      MAX_CHARACTER_SIZE = 40
+      MAX_CHARACTER_SIZE = 60
 
       def initialize(raw, indent_count=nil)
         super(raw)
